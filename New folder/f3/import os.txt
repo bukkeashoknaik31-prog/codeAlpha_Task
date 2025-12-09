@@ -1,0 +1,29 @@
+import os
+import re
+
+# --- Step 1: Define file paths ---
+input_file = "input.txt"     # the file that contains text with emails
+output_file = "emails.txt"   # file where we'll save the extracted emails
+
+# --- Step 2: Check if the input file exists ---
+if not os.path.exists(input_file):
+    print(f"Error: The file '{input_file}' was not found.")
+    exit()
+
+# --- Step 3: Read the content of the file ---
+with open(input_file, "r", encoding="utf-8") as f:
+    text = f.read()
+
+# --- Step 4: Use regex to find all email addresses ---
+email_pattern = r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+emails = re.findall(email_pattern, text)
+
+# --- Step 5: Remove duplicates and sort ---
+unique_emails = sorted(set(emails))
+
+# --- Step 6: Write results to output file ---
+with open(output_file, "w", encoding="utf-8") as f:
+    for email in unique_emails:
+        f.write(email + "\n")
+
+print(f"✅ Extracted {len(unique_emails)} unique email(s) to '{output_file}'.")
